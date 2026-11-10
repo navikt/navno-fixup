@@ -1,0 +1,12 @@
+{
+  "id": "min-release-age-3d",
+  "title": "chore: sett minimumReleaseAge til 3 dager",
+  "group": "navno-node",
+  "branch": "fixup/min-release-age-3d",
+  "draft": true,
+  "targets": {
+    "minimumReleaseAge": 4320
+  },
+  "commitTrailers": ["Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"],
+  "prFooter": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+}

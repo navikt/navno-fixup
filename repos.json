@@ -1,0 +1,31 @@
+{
+  "org": "navikt",
+  "topics": { "navno-node": "node", "navno-kotlin": "kotlin", "dekoratoren": "dekoratoren", "search": "search" },
+  "repos": [
+    { "name": "nav-dekoratoren", "kind": "app", "groups": ["navno-node", "dekoratoren"] },
+    {
+      "name": "nav-dekoratoren-moduler",
+      "kind": "library",
+      "groups": ["navno-node", "dekoratoren"],
+      "verify": ["pnpm run build:csr", "pnpm run build", "pnpm run lint:moduler", "pnpm run test"]
+    },
+    { "name": "nav-dekoratoren-status", "kind": "app", "groups": ["navno-node", "dekoratoren"] },
+    { "name": "tilbakemeldinger", "kind": "app", "groups": ["navno-node"] },
+    { "name": "nav-office-search", "kind": "app", "groups": ["navno-node", "search"] },
+    { "name": "nav-office-search-api", "kind": "app", "groups": ["navno-node", "search"] },
+    { "name": "navno-search-frontend", "kind": "app", "groups": ["navno-node", "search"] },
+    { "name": "nav-office-reception-info", "kind": "library", "groups": ["navno-node"] },
+    { "name": "nav-enonicxp", "kind": "app", "groups": ["navno-node"] },
+    { "name": "nav-enonicxp-dataquery", "kind": "app", "groups": ["navno-node"] },
+    { "name": "nav-enonicxp-dev-proxy", "kind": "app", "groups": ["navno-node"] },
+    { "name": "nav-enonicxp-frontend", "kind": "app", "groups": ["navno-node"] },
+    { "name": "nav-enonicxp-frontend-revalidator-proxy", "kind": "app", "groups": ["navno-node"] },
+    { "name": "navno-cms-archive", "kind": "app", "groups": ["navno-node"] },
+    { "name": "samisk-samtale-bestilling", "kind": "app", "groups": ["navno-node"] },
+    { "name": "nav-dekoratoren-api", "kind": "app", "groups": ["navno-kotlin"] },
+    { "name": "navno-search-api", "kind": "app", "groups": ["navno-kotlin"] },
+    { "name": "navno-search-admin-api", "kind": "app", "groups": ["navno-kotlin"] },
+    { "name": "navno-actions", "kind": "support", "groups": ["navno-node"] },
+    { "name": "navno-ci", "kind": "support", "groups": ["navno-ci"] }
+  ]
+}

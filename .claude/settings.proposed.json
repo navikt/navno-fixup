@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node fixup.mjs prepare *)",
+      "Bash(node fixup.mjs verify *)",
+      "Bash(node fixup.mjs review *)",
+      "Bash(node fixup.mjs status *)",
+      "Bash(node --test *)",
+      "Edit(/.work/**)"
+    ],
+    "ask": [
+      "Bash(node fixup.mjs publish *)",
+      "Bash(node fixup.mjs clean *)"
+    ],
+    "deny": [
+      "Bash(git push *)",
+      "Bash(gh pr create *)",
+      "Bash(gh pr edit *)",
+      "Bash(gh pr ready *)",
+      "Bash(gh pr merge *)",
+      "Bash(gh pr close *)",
+      "Bash(gh pr comment *)",
+      "Bash(gh api *)",
+      "Bash(gh workflow run *)",
+      "Bash(npm publish *)",
+      "Bash(pnpm publish *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}

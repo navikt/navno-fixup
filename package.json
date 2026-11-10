@@ -1,0 +1,12 @@
+{
+  "name": "navno-fixup",
+  "private": true,
+  "description": "Make the same change in several navikt repos: fresh clones, one branch and one draft PR each.",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\""
+  }
+}
