@@ -24,7 +24,14 @@ Answer questions such as "which projects use Hono?" with `gh`, not from disk. Do
   `gh api orgs/navikt/teams/team-nav-no/repos --paginate --jq '.[] | select(.archived|not) | [.name, (.topics|join(","))] | @tsv'`
 - Unless the user says otherwise, consider only repos with the `active` topic. Ignore the team's other repos, even when a search finds them. If it's unclear whether the user means a repo outside `active`, ask.
 - Or by topic: `gh search repos --owner navikt --topic node --topic active` (add `--topic dekoratoren`, etc.).
-- Search code: `gh search code '"hono"' --owner navikt --filename package.json`. Code search can't filter by team, so intersect the result with the team's repo list. It only covers default branches.
+- Search code in the team's repos only: pass each repo with its own `--repo`, all in one query, rather than searching `--owner navikt` and filtering afterwards.
+  `gh search code '"hono"' --filename package.json --repo navikt/a --repo navikt/b … --limit 100 --json repository,path --jq '.[] | [.repository.nameWithOwner, .path] | @tsv'`
+  - Org-wide hits for common terms (`react`) run into the thousands. `--limit` and GitHub's 1000-result cap cut them off, so team repos go missing without any error.
+  - The `repository` object has `nameWithOwner`, not `name`. `.repository.name` gives null, and every row then looks the same.
+  - Code search allows 10 requests a minute. Don't loop one query per repo; use one query per term.
+  - It only covers default branches.
+  - For "uses both X and Y", run one query per term and intersect on `nameWithOwner`. Keep the paths: in a monorepo, X and Y may sit in different workspaces, so say which.
+- Check the result before you report it. Empty output, rows with an empty repo field, or a count of exactly `--limit` mean the query is wrong or was cut short. They don't mean "no repos".
 - Several repos are monorepos (nav-dekoratoren has `packages/*`, for example). A dependency may be in any workspace's `package.json`, not only the root one. Search all of them, as `--filename package.json` does; don't read just the root file.
 - The same goes for changes: in a monorepo, check every workspace's `package.json` and `pnpm-workspace.yaml`, not only the root.
 
