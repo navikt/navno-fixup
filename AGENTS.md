@@ -6,6 +6,27 @@ Makes the same change in several navikt repos: a fresh clone of each, one `fixup
 - `campaigns/<id>/campaign.json` holds the group, branch, title and exact targets. `brief.md` describes the change in words.
 - `fixup.mjs` (with `lib/`) does everything mechanical: prepare, verify, review, publish, status and clean. You make the change itself and keep the user in the loop.
 
+## `repos.json`
+
+- `org` is the GitHub org (`navikt`). The team that owns these repos is `team-nav-no`.
+- `repos` lists every repo the tool may touch:
+  - `name`: the repo in `navikt`.
+  - `kind`: `app` (deployed), `library` (published package) or `support` (CI, actions and the like). Briefs give rules per kind.
+  - `groups`: which campaigns it belongs to. A campaign's `group` picks its repos.
+  - `verify` (optional): the check commands for `verify --local`, for repos whose PR checks don't use navno-ci's `node-build.yml`.
+- `topics` maps each group to the GitHub topic its repos carry, e.g. `navno-node` → `node`, `dekoratoren` → `dekoratoren`. The team also tags repos `active`, `deployed` and `library`. Use topics to find repos with `gh`, and to spot a repo that has the topic but is missing from `repos.json`.
+
+## Finding things across repos
+
+Answer questions such as "which projects use Hono?" with `gh`, not from disk. Don't go up out of this folder to look through other checkouts; they may be stale, and many repos aren't there.
+
+- Scope to the team. List its repos with their topics:
+  `gh api orgs/navikt/teams/team-nav-no/repos --paginate --jq '.[] | select(.archived|not) | [.name, (.topics|join(","))] | @tsv'`
+- Or by topic: `gh search repos --owner navikt --topic node` (add `--topic dekoratoren`, etc.).
+- Search code: `gh search code '"hono"' --owner navikt --filename package.json`. Code search can't filter by team, so intersect the result with the team's repo list. It only covers default branches.
+- Several repos are monorepos (nav-dekoratoren has `packages/*`, for example). A dependency may be in any workspace's `package.json`, not only the root one. Search all of them, as `--filename package.json` does; don't read just the root file.
+- The same goes for changes: in a monorepo, check every workspace's `package.json` and `pnpm-workspace.yaml`, not only the root.
+
 ## Hard rules
 
 - Edit only the fresh clones in `.work/<id>/<repo>`. Never touch the user's own checkouts such as `../nav-dekoratoren`.
