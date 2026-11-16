@@ -22,7 +22,8 @@ Answer questions such as "which projects use Hono?" with `gh`, not from disk. Do
 
 - Scope to the team. List its repos with their topics:
   `gh api orgs/navikt/teams/team-nav-no/repos --paginate --jq '.[] | select(.archived|not) | [.name, (.topics|join(","))] | @tsv'`
-- Or by topic: `gh search repos --owner navikt --topic node` (add `--topic dekoratoren`, etc.).
+- Unless the user says otherwise, consider only repos with the `active` topic. Ignore the team's other repos, even when a search finds them. If it's unclear whether the user means a repo outside `active`, ask.
+- Or by topic: `gh search repos --owner navikt --topic node --topic active` (add `--topic dekoratoren`, etc.).
 - Search code: `gh search code '"hono"' --owner navikt --filename package.json`. Code search can't filter by team, so intersect the result with the team's repo list. It only covers default branches.
 - Several repos are monorepos (nav-dekoratoren has `packages/*`, for example). A dependency may be in any workspace's `package.json`, not only the root one. Search all of them, as `--filename package.json` does; don't read just the root file.
 - The same goes for changes: in a monorepo, check every workspace's `package.json` and `pnpm-workspace.yaml`, not only the root.
